@@ -9,10 +9,6 @@ namespace Infra
         {
         }
 
-        public MainContext()
-        {
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MainContext).Assembly);
@@ -24,7 +20,7 @@ namespace Infra
             {
                 optionsBuilder
                     .UseLazyLoadingProxies()
-                    .UseSqlServer("DefaultConnection");
+                    .UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Aprendizagem;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }
         }
     }
