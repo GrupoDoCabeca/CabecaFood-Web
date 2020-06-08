@@ -1,4 +1,6 @@
 ﻿using Domain.DTO;
+using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
+using System.Collections.Generic;
 
 namespace Domain.Entities
 {
@@ -9,17 +11,14 @@ namespace Domain.Entities
         public double Salary { get; protected set; }
         public string PIS { get; protected set; }
 
+        public ICollection<Order> Orders { get; protected set; }
+
         //Construtores
         public DeliveryMan()
         {
 
         }
-        public DeliveryMan(string name, double salary, string pIS)
-        {
-            this.Name = name.FormatProps();
-            this.PIS = pIS.FormatProps();
-            this.Salary = salary;
-        }
+
         public DeliveryMan(DeliveryManDTO deliveryMan)
         {
             this.Name = deliveryMan.Name.FormatProps();
@@ -29,17 +28,21 @@ namespace Domain.Entities
 
 
         //Metodos
-        public void Update(string name, double salary, string pIS)
-        {
-            this.Name = name.FormatProps();
-            this.PIS = pIS.FormatProps();
-            this.Salary = salary;
-        }
         public void Update(DeliveryManDTO deliveryMan)
         {
             this.Name = deliveryMan.Name.FormatProps();
             this.PIS = deliveryMan.PIS.FormatProps();
             this.Salary = deliveryMan.Salary;
+        }
+
+        public override HashSet<Error> GetErrors()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool IsInvalid()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

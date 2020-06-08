@@ -10,15 +10,17 @@ namespace Infra.Mappings
         {
             builder.ToTable("DELIVERY_MAN");
 
-            builder.Property(u => u.Id).UseIdentityColumn().IsRequired().HasColumnName("ID");
+            builder.Property(d => d.Id).UseIdentityColumn().IsRequired().HasColumnName("ID");
 
-            builder.Property(u => u.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
+            builder.Property(d => d.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
 
-            builder.Property(u => u.Name).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NAME");
+            builder.Property(d => d.Name).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NAME");
 
-            builder.Property(u => u.PIS).IsRequired().HasColumnType("CHAR(11)").HasColumnName("PIS");
+            builder.Property(d => d.PIS).IsRequired().HasColumnType("CHAR(11)").HasColumnName("PIS");
 
-            builder.Property(u => u.Salary).IsRequired().HasColumnType("FLOAT").HasColumnName("SALARY");
+            builder.Property(d => d.Salary).IsRequired().HasColumnType("FLOAT").HasColumnName("SALARY");
+
+            builder.HasMany(d => d.Orders).WithOne(o => o.DeliveryMan).HasForeignKey(o => o.DeliveryManId);
 
         }
     }

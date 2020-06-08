@@ -10,15 +10,16 @@ namespace Infra.Mappings
         {
             builder.ToTable("SNACK");
 
-            builder.Property(u => u.Id).UseIdentityColumn().IsRequired().HasColumnName("ID");
+            builder.Property(s => s.Id).UseIdentityColumn().IsRequired().HasColumnName("ID");
 
-            builder.Property(u => u.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
+            builder.Property(s => s.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
 
-            builder.Property(u => u.Name).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NAME");
+            builder.Property(s => s.Name).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NAME");
 
-            builder.Property(u => u.Price).IsRequired().HasColumnType("FLOAT").HasColumnName("PRICE");
+            builder.Property(s => s.Price).IsRequired().HasColumnType("FLOAT").HasColumnName("PRICE");
 
-            builder.Property(u => u.Description).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("DESCRIPTION");
+            builder.Property(s => s.Description).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("DESCRIPTION");
+
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Infra.Mappings
             builder.Property(u => u.Password).HasMaxLength(16).HasColumnType("VARCHAR(16)").IsRequired().HasColumnName("PASSWORD");
 
             builder.Property(u => u.IsAdmin).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("IS_ADMIN");
+
+            builder.HasMany(u => u.Orders).WithOne(o => o.User).HasForeignKey(u => u.UserId);
         }
     }
 }

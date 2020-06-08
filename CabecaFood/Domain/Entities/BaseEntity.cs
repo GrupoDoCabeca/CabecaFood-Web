@@ -1,4 +1,7 @@
-﻿namespace Domain.Entities
+﻿using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
+using System.Collections.Generic;
+
+namespace Domain.Entities
 {
     public abstract class BaseEntity
     {
@@ -9,5 +12,8 @@
         {
             this.Deleted = true;
         }
+
+        public abstract HashSet<Error> GetErrors();
+        public abstract bool IsInvalid();
     }
 }

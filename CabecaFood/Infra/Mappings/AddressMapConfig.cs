@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,19 +11,21 @@ namespace Infra.Mappings
         {
             builder.ToTable("ADDRESS");
 
-            builder.Property(u => u.Id).UseIdentityColumn().IsRequired().HasColumnName("ID");
+            builder.Property(a => a.Id).UseIdentityColumn().IsRequired().HasColumnName("ID");
 
-            builder.Property(u => u.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
+            builder.Property(a => a.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
 
-            builder.Property(u => u.State).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("STATE");
+            builder.Property(a => a.State).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("STATE");
 
-            builder.Property(u => u.City).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("CITY");
+            builder.Property(a => a.City).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("CITY");
 
-            builder.Property(u => u.Neighborhood).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NEIGHBORHOOD");
+            builder.Property(a => a.Neighborhood).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NEIGHBORHOOD");
 
-            builder.Property(u => u.Street).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("STREET");
+            builder.Property(a => a.Street).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("STREET");
 
-            builder.Property(u => u.Number).IsRequired().HasColumnType("VARCHAR(6)").HasColumnName("NUMBER");
+            builder.Property(a => a.Number).IsRequired().HasColumnType("VARCHAR(6)").HasColumnName("NUMBER");
+
+            builder.HasOne(a => a.User).WithOne(u => u.Address).HasForeignKey<User>(a => a.AddressId);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
-
-namespace Domain.DTO
+﻿namespace Domain.DTO
 {
     public class OrderDTO
     {
-        public DateTime DateTime { get; set; }
+        public int? DeliveryManId { get; set; }
+        public int UserId { get; set; }
+
     }
 }

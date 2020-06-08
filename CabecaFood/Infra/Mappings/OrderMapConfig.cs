@@ -10,11 +10,17 @@ namespace Infra.Mappings
         {
             builder.ToTable("ORDER");
 
-            builder.Property(u => u.Id).UseIdentityColumn().IsRequired().HasColumnName("ID");
+            builder.Property(o => o.Id).UseIdentityColumn().IsRequired().HasColumnName("ID");
 
-            builder.Property(u => u.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
+            builder.Property(o => o.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
 
-            builder.Property(u => u.DateTime).HasDefaultValueSql("getdate()").IsRequired().HasColumnType("DATETIME2").HasColumnName("DATE");
+            builder.Property(o => o.DateTime).HasDefaultValueSql("getdate()").IsRequired().HasColumnType("DATETIME2").HasColumnName("DATE");
+
+            builder.HasOne(o => o.DeliveryMan).WithMany(d => d.Orders).HasForeignKey(o => o.DeliveryManId).IsRequired(false);
+
+            builder.HasOne(o => o.User).WithMany(u => u.Orders).HasForeignKey(o => o.UserId);
+
+
         }
     }
 }
