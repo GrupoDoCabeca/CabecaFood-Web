@@ -1,6 +1,8 @@
 ﻿using Domain.DTO;
+using Domain.FluentValidations;
 using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Entities
 {
@@ -12,7 +14,7 @@ namespace Domain.Entities
         public string Description { get; protected set; }
 
         public virtual ICollection<Order_Snack> Orders_Snacks { get; protected set; }
-        public virtual ICollection<Snack_Ingredient> Snacks_Ingredients { get; set; }
+        public virtual ICollection<Snack_Ingredient> Snacks_Ingredients { get; protected set; }
 
         //Construtores
         public Snack()
@@ -37,12 +39,12 @@ namespace Domain.Entities
 
         public override HashSet<Error> GetErrors()
         {
-            throw new System.NotImplementedException();
+            return new SnackValidation().CustomValidate(this);
         }
 
         public override bool IsInvalid()
         {
-            throw new System.NotImplementedException();
+            return new SnackValidation().CustomValidate(this).Any();
         }
     }
 }

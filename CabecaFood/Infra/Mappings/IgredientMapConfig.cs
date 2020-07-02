@@ -17,7 +17,6 @@ namespace Infra.Mappings
             builder.Property(i => i.Name).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NAME");
 
             builder.Property(i => i.AmountType).IsRequired().HasColumnName("AMOUNT_TYPE");
-
         }
     }
 }

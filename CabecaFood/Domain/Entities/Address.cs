@@ -1,6 +1,8 @@
 ﻿using Domain.DTO;
+using Domain.FluentValidations;
 using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Entities
 {
@@ -12,9 +14,8 @@ namespace Domain.Entities
         public string Neighborhood { get; protected set; }
         public string Street { get; protected set; }
         public string Number { get; protected set; }
-
         public int UserId { get; protected set; }
-        public virtual User User { get; protected set; }
+        public User User { get; protected set; }
 
         //Construtores
         public Address()
@@ -44,12 +45,12 @@ namespace Domain.Entities
 
         public override HashSet<Error> GetErrors()
         {
-            throw new System.NotImplementedException();
+            return new AddressValidation().CustomValidate(this);
         }
 
         public override bool IsInvalid()
         {
-            throw new System.NotImplementedException();
+            return new AddressValidation().CustomValidate(this).Any();
         }
     }
 }

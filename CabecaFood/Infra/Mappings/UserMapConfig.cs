@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,6 +25,8 @@ namespace Infra.Mappings
             builder.Property(u => u.IsAdmin).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("IS_ADMIN");
 
             builder.HasMany(u => u.Orders).WithOne(o => o.User).HasForeignKey(u => u.UserId);
+
+            builder.HasOne(a => a.Address).WithOne(u => u.User).HasForeignKey<Address>(a => a.UserId).IsRequired(false);
         }
     }
 }

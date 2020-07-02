@@ -1,7 +1,9 @@
 ﻿using Domain.DTO;
 using Domain.Enums;
+using Domain.FluentValidations;
 using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Entities
 {
@@ -18,27 +20,27 @@ namespace Domain.Entities
         {
 
         }
-        public Ingredient(IngredientsDTO ingredients)
+        public Ingredient(IngredientDTO ingredient)
         {
-            this.Name = ingredients.Name.FormatProps();
-            this.AmountType = ingredients.AmountType;
+            this.Name = ingredient.Name.FormatProps();
+            this.AmountType = ingredient.AmountType;
         }
 
         //Metodos
-        public void Update(IngredientsDTO ingredients)
+        public void Update(IngredientDTO ingredient)
         {
-            this.Name = ingredients.Name.FormatProps();
-            this.AmountType = ingredients.AmountType;
+            this.Name = ingredient.Name.FormatProps();
+            this.AmountType = ingredient.AmountType;
         }
 
         public override HashSet<Error> GetErrors()
         {
-            throw new System.NotImplementedException();
+            return new IngredientValidation().CustomValidate(this);
         }
 
         public override bool IsInvalid()
         {
-            throw new System.NotImplementedException();
+            return new IngredientValidation().CustomValidate(this).Any();
         }
     }
 }

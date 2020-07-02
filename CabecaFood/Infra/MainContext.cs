@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra
 {
@@ -8,6 +10,15 @@ namespace Infra
             : base(options)
         {
         }
+
+        public DbSet<Address> Address { get; set; }
+        public DbSet<DeliveryMan> DeliveryMan { get; set; }
+        public DbSet<Ingredient> Ingredient { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<Order_Snack> Order_Snack { get; set; }
+        public DbSet<Snack> Snack { get; set; }
+        public DbSet<Snack_Ingredient> Snack_Ingredient { get; set; }
+        public DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

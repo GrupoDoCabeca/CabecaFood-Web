@@ -1,8 +1,8 @@
 ﻿using Domain.Enums;
 
-namespace Domain.DTO
+namespace BusinessLogicalLayer.Models.IngredientModel
 {
-    public class IngredientsDTO
+    public class IngredientRequestModel
     {
         public string Name { get; set; }
         public AmountType AmountType { get; set; }

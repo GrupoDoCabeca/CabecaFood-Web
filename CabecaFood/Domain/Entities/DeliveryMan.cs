@@ -1,6 +1,8 @@
 ﻿using Domain.DTO;
+using Domain.FluentValidations;
 using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Entities
 {
@@ -37,12 +39,12 @@ namespace Domain.Entities
 
         public override HashSet<Error> GetErrors()
         {
-            throw new System.NotImplementedException();
+            return new DeliveryManValidation().CustomValidate(this);
         }
 
         public override bool IsInvalid()
         {
-            throw new System.NotImplementedException();
+            return new DeliveryManValidation().CustomValidate(this).Any();
         }
     }
 }

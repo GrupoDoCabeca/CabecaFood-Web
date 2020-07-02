@@ -65,6 +65,9 @@ namespace Infra.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("ADDRESS");
                 });
 
@@ -245,7 +248,7 @@ namespace Infra.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AddressId")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Deleted")
@@ -279,13 +282,17 @@ namespace Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
-
                     b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("USERS");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Address", b =>
+                {
+                    b.HasOne("Domain.User", "User")
+                        .WithOne("Address")
+                        .HasForeignKey("Domain.Entities.Address", "UserId");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -327,15 +334,6 @@ namespace Infra.Migrations
                     b.HasOne("Domain.Entities.Snack", "Snack")
                         .WithMany("Snacks_Ingredients")
                         .HasForeignKey("SnackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.User", b =>
-                {
-                    b.HasOne("Domain.Entities.Address", "Address")
-                        .WithOne("User")
-                        .HasForeignKey("Domain.User", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

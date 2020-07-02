@@ -14,7 +14,7 @@ namespace Infra.Mappings
 
             builder.HasOne(x => x.Snack).WithMany(s => s.Orders_Snacks).HasForeignKey(x => x.SnackId);
 
-            builder.HasOne(x => x.Order).WithMany(s => s.Orders_Snacks).HasForeignKey(x => x.OrderId);
+            builder.HasOne(x => x.Order).WithMany(s => s.Order_Snacks).HasForeignKey(x => x.OrderId);
         }
     }
 }

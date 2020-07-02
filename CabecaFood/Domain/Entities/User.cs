@@ -1,7 +1,9 @@
 ﻿using Domain.DTO;
 using Domain.Entities;
+using Domain.FluentValidations;
 using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain
 {
@@ -13,7 +15,7 @@ namespace Domain
         public string Password { get; protected set; }
         public bool IsAdmin { get; protected set; }
 
-        public int AddressId { get; protected set; }
+        public int? AddressId { get; protected set; }
         public virtual Address Address { get; protected set; }
 
         public ICollection<Order> Orders { get; protected set; }
@@ -45,12 +47,12 @@ namespace Domain
 
         public override HashSet<Error> GetErrors()
         {
-            throw new System.NotImplementedException();
+            return new UserValidation().CustomValidate(this);
         }
 
         public override bool IsInvalid()
         {
-            throw new System.NotImplementedException();
+            return new UserValidation().CustomValidate(this).Any();
         }
     }
 }

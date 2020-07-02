@@ -1,4 +1,9 @@
+using BusinessLogicalLayer.IServices;
+using BusinessLogicalLayer.Services;
 using Infra;
+using Infra.IRepositories;
+using Infra.Repositories;
+using Infra.Repositories.IRepositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +30,29 @@ namespace ApresentationLayer
             //services.SetupRepositoriesDependencies();
             services.AddControllers();
             services.AddCors();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
 
 
+
+            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<IDeliveryManService, DeliveryManService>();
+            services.AddScoped<IIngredientService, IngredientService>();
+            services.AddScoped<IOrder_SnackService, Order_SnackService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ISnack_IngredientService, Snack_IngredientService>();
+            services.AddScoped<ISnackService, SnackService>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IDeliveryManRepository, DeliveryManRepository>();
+            services.AddScoped<IIngredientRepository, IngredientRepository>();
+            services.AddScoped<IOrder_SnackRepository, Order_SnackRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ISnack_IngredientRepository, Snack_IngredientRepository>();
+            services.AddScoped<ISnackRepository, SnackRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

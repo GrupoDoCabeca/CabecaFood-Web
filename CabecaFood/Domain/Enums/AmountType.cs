@@ -2,8 +2,8 @@
 {
     public enum AmountType
     {
-        Kg = 1,
-        Lt = 2,
-        Unit = 3
+        Kg = 0,
+        Lt = 1,
+        Unit = 2
     }
 }
