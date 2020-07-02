@@ -41,7 +41,12 @@ namespace Infra.Repositories
 
         public async Task<User> GetById(int id)
         {
-            return await _context.User.Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
+            return await _context.User.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
+        }
+
+        public async Task<User> Login(string email, string password)
+        {
+            return await _context.User.FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
         }
 
         public async Task Save()

@@ -7,5 +7,6 @@ namespace Infra.IRepositories
     public interface IUserRepository : IGenericRepository<User>
     {
         Task<bool> EmailExist(User user);
+        Task<User> Login(string email, string password);
     }
 }

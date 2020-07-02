@@ -14,7 +14,6 @@ namespace BusinessLogicalLayer.CustomsAutoMapper
         public static UserResponseModel UserToUserResponse(User user)
         {
             var userResponse = Map.ChangeValues<User, UserResponseModel>(user);
-            userResponse.address = user.Address;
             return userResponse;
         }
     }

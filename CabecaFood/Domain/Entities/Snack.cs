@@ -13,8 +13,10 @@ namespace Domain.Entities
         public double Price { get; protected set; }
         public string Description { get; protected set; }
 
-        public virtual ICollection<Order_Snack> Orders_Snacks { get; protected set; }
-        public virtual ICollection<Snack_Ingredient> Snacks_Ingredients { get; protected set; }
+        public int? OrderId { get; protected set; }
+        public virtual Order Order { get; set; }
+
+
 
         //Construtores
         public Snack()
@@ -29,6 +31,11 @@ namespace Domain.Entities
         }
 
         //Metodos
+
+        public void SetOrderId(int orderId)
+        {
+            this.OrderId = orderId;
+        }
 
         public void Update(SnackDTO snack)
         {

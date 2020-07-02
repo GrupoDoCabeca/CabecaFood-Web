@@ -1,21 +1,20 @@
 ﻿using BusinessLogicalLayer.IServices;
-using BusinessLogicalLayer.Models.DeliveryManModel;
-using BusinessLogicalLayer.Models.OrderModel;
+using BusinessLogicalLayer.Models.DeliveryManMolder;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace ApresentationLayer.Controllers
 {
-    [Route("orders")]
+    [Route("deliverymans")]
     [ApiController]
-    public class OrderControllerController : AbstractController
+    public class DeliveryManController : AbstractController
     {
-        private readonly IOrderService _orderService;
+        private readonly IDeliveryManService _deliveryManService;
 
-        public OrderControllerController(IOrderService orderService)
+        public DeliveryManController(IDeliveryManService deliveryManService)
         {
-            _orderService = orderService;
+            _deliveryManService = deliveryManService;
         }
 
         [HttpGet]
@@ -23,8 +22,8 @@ namespace ApresentationLayer.Controllers
         {
             try
             {
-                var orders = await _orderService.GetAll();
-                return Ok(orders);
+                var deliveryMans = await _deliveryManService.GetAll();
+                return Ok(deliveryMans);
             }
             catch (Exception ex)
             {
@@ -38,8 +37,8 @@ namespace ApresentationLayer.Controllers
         {
             try
             {
-                var order = await _orderService.GetById(id);
-                return Ok(order);
+                var deliveryMan = await _deliveryManService.GetById(id);
+                return Ok(deliveryMan);
             }
             catch (Exception ex)
             {
@@ -53,8 +52,8 @@ namespace ApresentationLayer.Controllers
         {
             try
             {
-                var order = await _orderService.Delete(id);
-                return Ok(order);
+                var deliveryMan = await _deliveryManService.Delete(id);
+                return Ok(deliveryMan);
             }
             catch (Exception ex)
             {
@@ -63,13 +62,13 @@ namespace ApresentationLayer.Controllers
         }
 
         [HttpPut]
-        [Route("{orderId}/deliverymans")]
-        public async Task<IActionResult> AddDelivery([FromRoute] int orderId, [FromBody] DeliveryManAddOrderRequestModel model)
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] DeliveryManRequestModel model)
         {
             try
             {
-                var order = await _orderService.AddDelivery(orderId, model.DeliveryManId);
-                return Ok(order);
+                var deliveryMan = await _deliveryManService.Update(id, model);
+                return Ok(deliveryMan);
             }
             catch (Exception ex)
             {
@@ -78,12 +77,12 @@ namespace ApresentationLayer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] OrderRequestModel model)
+        public async Task<IActionResult> Create([FromBody] DeliveryManRequestModel model)
         {
             try
             {
-                var order = await _orderService.Create(model);
-                return Ok(order);
+                var deliveryMan = await _deliveryManService.Create(model);
+                return Ok(deliveryMan);
             }
             catch (Exception ex)
             {

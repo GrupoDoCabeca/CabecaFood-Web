@@ -15,7 +15,7 @@ namespace Domain.Entities
         public int UserId { get; protected set; }
         public virtual User User { get; protected set; }
 
-        public virtual ICollection<Order_Snack> Order_Snacks { get; protected set; }
+        public virtual ICollection<Snack> Snacks { get; protected set; }
 
         public int? DeliveryManId { get; protected set; }
         public virtual DeliveryMan DeliveryMan { get; protected set; }

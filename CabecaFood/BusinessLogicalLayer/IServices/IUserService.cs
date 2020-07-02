@@ -11,5 +11,6 @@ namespace BusinessLogicalLayer.IServices
         Task<UserResponseModel> Create(UserRequestModel userModel);
         Task<UserResponseModel> Update(int id, UserRequestModel userModel);
         Task<UserResponseModel> Delete(int id);
+        Task<UserResponseModel> Login(UserLoginRequestModel userLoginRequestModel);
     }
 }

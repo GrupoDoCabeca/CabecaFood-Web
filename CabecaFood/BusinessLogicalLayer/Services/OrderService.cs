@@ -6,6 +6,7 @@ using Infra.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace BusinessLogicalLayer.Services
 {
@@ -15,12 +16,14 @@ namespace BusinessLogicalLayer.Services
         private readonly IOrderRepository _orderRepository;
         private readonly IDeliveryManRepository _deliveryManRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ISnackRepository _snackRepository;
 
-        public OrderService(IOrderRepository orderRepository, IDeliveryManRepository deliveryManRepository, IUserRepository userRepository)
+        public OrderService(IOrderRepository orderRepository, IDeliveryManRepository deliveryManRepository, IUserRepository userRepository, ISnackRepository snackRepository)
         {
             _orderRepository = orderRepository;
             _deliveryManRepository = deliveryManRepository;
             _userRepository = userRepository;
+            _snackRepository = snackRepository;
         }
 
         public async Task<OrderResponseModel> AddDelivery(int orderId, int deliveryId)
@@ -32,7 +35,7 @@ namespace BusinessLogicalLayer.Services
 
             var deliveryMan = await _deliveryManRepository.GetById(deliveryId);
 
-            if (deliveryMan != null)
+            if (deliveryMan == null)
             {
                 AddError("Entregador", "Não encontrado");
                 HandleError();
@@ -67,8 +70,29 @@ namespace BusinessLogicalLayer.Services
 
             HandleError();
 
-            await _orderRepository.Create(order);
-            await _orderRepository.Save();
+            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                await _orderRepository.Create(order);
+                await _orderRepository.Save();
+
+                foreach (var snackId in orderModel.SnacksId)
+                {
+
+                    var snack = await _snackRepository.GetById(snackId);
+
+                    if (snack == null)
+                    {
+                        AddError("Lanche", "Não encontrado");
+                        HandleError();
+                    }
+
+                    snack.SetOrderId(order.Id);
+                    await _snackRepository.Update(snack);
+                }
+
+                await _snackRepository.Save();
+                scope.Complete();
+            }
 
             return OrderMap.OrderToOrderResponse(order);
         }
@@ -83,6 +107,8 @@ namespace BusinessLogicalLayer.Services
 
             if (order == null)
                 AddError("Pedido", "Não encontrado");
+
+            HandleError();
 
             await _orderRepository.Delete(id);
             await _orderRepository.Save();
@@ -106,6 +132,8 @@ namespace BusinessLogicalLayer.Services
 
             if (order == null)
                 AddError("Pedido", "Não encontrado");
+
+            HandleError();
 
             return OrderMap.OrderToOrderResponse(order);
         }

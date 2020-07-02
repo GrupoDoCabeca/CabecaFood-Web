@@ -57,6 +57,22 @@ namespace BusinessLogicalLayer.Services
             return AddressMap.AddressToAddressResponse(address);
         }
 
+        public async Task<AddressResponseModel> GetByUserId(int userId)
+        {
+            ValidateId(userId);
+
+            HandleError();
+
+            var address = await _addressRepository.GetByUserId(userId);
+
+            if (address == null)
+                AddError("Endereco", "Não encontrado");
+
+            HandleError();
+
+            return AddressMap.AddressToAddressResponse(address);
+        }
+
         public async Task<AddressResponseModel> Update(int id, AddressRequestModel addressModel)
         {
             var address = AddressMap.AddressRequestToAddress(addressModel);

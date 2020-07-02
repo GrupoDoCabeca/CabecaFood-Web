@@ -1,8 +1,11 @@
-﻿namespace BusinessLogicalLayer.Models.OrderModel
+﻿using System.Collections.Generic;
+
+namespace BusinessLogicalLayer.Models.OrderModel
 {
     public class OrderRequestModel
     {
-        public int UserId { get; protected set; }
-        public int? DeliveryManId { get; protected set; }
+        public int UserId { get; set; }
+        public int? DeliveryManId { get; set; }
+        public ICollection<int> SnacksId { get; set; } = new List<int>();
     }
 }

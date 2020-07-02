@@ -31,7 +31,7 @@ namespace Infra.Repositories
 
         public async Task<IEnumerable<Order>> GetAll()
         {
-            return await _context.Order.Where(x => !x.Deleted).ToListAsync();
+            return await _context.Order.Include(x => x.Snacks).Where(x => !x.Deleted).ToListAsync();
         }
 
         public async Task<Order> GetById(int id)

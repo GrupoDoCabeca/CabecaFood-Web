@@ -74,6 +74,18 @@ namespace BusinessLogicalLayer.Services
             return UserMap.UserToUserResponse(user);
         }
 
+        public async Task<UserResponseModel> Login(UserLoginRequestModel userLoginRequestModel)
+        {
+            var user = await _userRepository.Login(userLoginRequestModel.Email, userLoginRequestModel.Password);
+
+            if (user == null)
+                AddError("Email ou senha", "Invalido");
+
+            HandleError();
+
+            return UserMap.UserToUserResponse(user);
+        }
+
         public async Task<UserResponseModel> Update(int id, UserRequestModel userModel)
         {
             var user = UserMap.UserRequestToUser(userModel);

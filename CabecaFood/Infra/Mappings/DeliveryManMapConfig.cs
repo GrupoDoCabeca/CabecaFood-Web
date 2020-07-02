@@ -16,7 +16,7 @@ namespace Infra.Mappings
 
             builder.Property(d => d.Name).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NAME");
 
-            builder.Property(d => d.PIS).IsRequired().HasColumnType("CHAR(11)").HasColumnName("PIS");
+            builder.Property(d => d.PIS).IsRequired().HasColumnType("CHAR(14)").HasColumnName("PIS");
 
             builder.Property(d => d.Salary).IsRequired().HasColumnType("FLOAT").HasColumnName("SALARY");
 

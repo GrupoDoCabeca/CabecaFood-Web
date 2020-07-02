@@ -10,6 +10,7 @@ namespace Infra.Repositories.IRepositories
         Task<Address> GetById(int id);
         Task Create(Address entity);
         Task Update(Address entity);
+        Task<Address> GetByUserId(int userId);
         Task Save();
 
     }

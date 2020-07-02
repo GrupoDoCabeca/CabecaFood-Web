@@ -93,6 +93,21 @@ namespace ApresentationLayer.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequestModel model)
+        {
+            try
+            {
+                var user = await _userService.Login(model);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
         [HttpPost]
         [Route("address")]
         public async Task<IActionResult> CreateAddress([FromBody] AddressRequestModel model)
@@ -100,6 +115,21 @@ namespace ApresentationLayer.Controllers
             try
             {
                 var address = await _addressService.Create(model);
+                return Ok(address);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("{id}/address")]
+        public async Task<IActionResult> GetByUserId([FromRoute] int id)
+        {
+            try
+            {
+                var address = await _addressService.GetByUserId(id);
                 return Ok(address);
             }
             catch (Exception ex)
@@ -122,6 +152,5 @@ namespace ApresentationLayer.Controllers
                 return HandleControllerErrors(ex);
             }
         }
-
     }
 }

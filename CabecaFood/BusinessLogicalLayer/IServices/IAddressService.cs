@@ -10,5 +10,6 @@ namespace BusinessLogicalLayer.IServices
         Task<AddressResponseModel> GetById(int id);
         Task<AddressResponseModel> Create(AddressRequestModel addressModel);
         Task<AddressResponseModel> Update(int id, AddressRequestModel addressModel);
+        Task<AddressResponseModel> GetByUserId(int userId);
     }
 }

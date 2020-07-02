@@ -4,14 +4,16 @@ using Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infra.Migrations
 {
     [DbContext(typeof(MainContext))]
-    partial class MainContextModelSnapshot : ModelSnapshot
+    [Migration("20200702184601_PisWithFixedLenght")]
+    partial class PisWithFixedLenght
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,6 +108,36 @@ namespace Infra.Migrations
                     b.ToTable("DELIVERY_MAN");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Ingredient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AmountType")
+                        .HasColumnName("AMOUNT_TYPE")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Deleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("DELETED")
+                        .HasColumnType("BIT")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("NAME")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("INGREDIENTS");
+                });
+
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -143,6 +175,21 @@ namespace Infra.Migrations
                     b.ToTable("ORDER");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Order_Snack", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SnackId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderId", "SnackId");
+
+                    b.HasIndex("SnackId");
+
+                    b.ToTable("ORDER_SNACK");
+                });
+
             modelBuilder.Entity("Domain.Entities.Snack", b =>
                 {
                     b.Property<int>("Id")
@@ -169,18 +216,28 @@ namespace Infra.Migrations
                         .HasColumnName("NAME")
                         .HasColumnType("VARCHAR(100)");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Price")
                         .HasColumnName("PRICE")
                         .HasColumnType("FLOAT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
                     b.ToTable("SNACK");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Snack_Ingredient", b =>
+                {
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SnackId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredientId", "SnackId");
+
+                    b.HasIndex("SnackId");
+
+                    b.ToTable("SNACK_INGREDIENT");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -253,11 +310,34 @@ namespace Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Snack", b =>
+            modelBuilder.Entity("Domain.Entities.Order_Snack", b =>
                 {
                     b.HasOne("Domain.Entities.Order", "Order")
-                        .WithMany("Snacks")
-                        .HasForeignKey("OrderId");
+                        .WithMany("Order_Snacks")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Snack", "Snack")
+                        .WithMany("Orders_Snacks")
+                        .HasForeignKey("SnackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Snack_Ingredient", b =>
+                {
+                    b.HasOne("Domain.Entities.Ingredient", "Ingredient")
+                        .WithMany("Snacks_Ingredients")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Snack", "Snack")
+                        .WithMany("Snacks_Ingredients")
+                        .HasForeignKey("SnackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
