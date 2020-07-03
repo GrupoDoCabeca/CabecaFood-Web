@@ -66,7 +66,7 @@ namespace ApresentationLayer.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserRequestModel model)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserUpdateRequestModel model)
         {
             try
             {
@@ -78,6 +78,22 @@ namespace ApresentationLayer.Controllers
                 return HandleControllerErrors(ex);
             }
         }
+
+        [HttpPut]
+        [Route("{id}/password")]
+        public async Task<IActionResult> UpdatePassword([FromRoute] int id, [FromBody] UserPasswordRequestModel model)
+        {
+            try
+            {
+                var user = await _userService.ChangePassword(id, model);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] UserRequestModel model)

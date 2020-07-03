@@ -20,7 +20,7 @@ namespace Infra.Mappings
             builder.Property(u => u.Email).HasMaxLength(100).HasColumnType("VARCHAR(100)").IsRequired().HasColumnName("EMAIL");
             builder.HasIndex(u => u.Email).IsUnique(true);
 
-            builder.Property(u => u.Password).HasMaxLength(16).HasColumnType("VARCHAR(16)").IsRequired().HasColumnName("PASSWORD");
+            builder.Property(u => u.Password).HasMaxLength(16).HasColumnType("VARCHAR(255)").IsRequired().HasColumnName("PASSWORD");
 
             builder.Property(u => u.IsAdmin).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("IS_ADMIN");
 

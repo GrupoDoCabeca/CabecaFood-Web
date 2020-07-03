@@ -40,9 +40,18 @@ namespace Domain
         {
             this.Name = user.Name;
             this.Email = user.Email;
-            this.Password = user.Password;
             this.IsAdmin = user.IsAdmin;
             this.AddressId = user.AddressId;
+        }
+
+        public void ChangePassword(string password)
+        {
+            this.Password = password;
+        }
+
+        public void HashPassword()
+        {
+            this.Password = HashService.HashString(this.Password);
         }
 
         public override HashSet<Error> GetErrors()

@@ -9,8 +9,10 @@ namespace BusinessLogicalLayer.IServices
         Task<List<UserResponseModel>> GetAll();
         Task<UserResponseModel> GetById(int id);
         Task<UserResponseModel> Create(UserRequestModel userModel);
-        Task<UserResponseModel> Update(int id, UserRequestModel userModel);
+        Task<UserResponseModel> Update(int id, UserUpdateRequestModel userModel);
         Task<UserResponseModel> Delete(int id);
         Task<UserResponseModel> Login(UserLoginRequestModel userLoginRequestModel);
+        Task<UserResponseModel> ChangePassword(int userId, UserPasswordRequestModel userPasswordRequestModel);
+
     }
 }

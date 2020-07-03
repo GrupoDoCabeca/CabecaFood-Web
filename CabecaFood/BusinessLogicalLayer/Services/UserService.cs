@@ -21,11 +21,41 @@ namespace BusinessLogicalLayer.Services
             _userRepository = userRepository;
         }
 
+        public async Task<UserResponseModel> ChangePassword(int userId, UserPasswordRequestModel userPasswordRequestModel)
+        {
+            var user = await _userRepository.GetById(userId);
+
+            if (user == null)
+                AddError("Usuario", "Não encontrado");
+
+            HandleError();
+
+            var IsEqual = HashService.CompareHash(userPasswordRequestModel.Password, user.Password);
+
+            if (IsEqual)
+                AddError("Senha", "Senha invalida!");
+
+            HandleError();
+
+            user.ChangePassword(userPasswordRequestModel.Password);
+
+            Validate(user);
+
+            user.HashPassword();
+
+            await _userRepository.Update(user);
+            await _userRepository.Save();
+
+            return UserMap.UserToUserResponse(user);
+        }
+
         public async Task<UserResponseModel> Create(UserRequestModel userModel)
         {
             var user = UserMap.UserRequestToUser(userModel);
 
             Validate(user);
+
+            user.HashPassword();
 
             await _userRepository.Create(user);
             await _userRepository.Save();
@@ -76,7 +106,8 @@ namespace BusinessLogicalLayer.Services
 
         public async Task<UserResponseModel> Login(UserLoginRequestModel userLoginRequestModel)
         {
-            var user = await _userRepository.Login(userLoginRequestModel.Email, userLoginRequestModel.Password);
+            var passwordHash = HashService.HashString(userLoginRequestModel.Password);
+            var user = await _userRepository.Login(userLoginRequestModel.Email, passwordHash);
 
             if (user == null)
                 AddError("Email ou senha", "Invalido");
@@ -86,9 +117,9 @@ namespace BusinessLogicalLayer.Services
             return UserMap.UserToUserResponse(user);
         }
 
-        public async Task<UserResponseModel> Update(int id, UserRequestModel userModel)
+        public async Task<UserResponseModel> Update(int id, UserUpdateRequestModel userModel)
         {
-            var user = UserMap.UserRequestToUser(userModel);
+            var user = UserMap.UserUpdateToUser(userModel);
 
             Validate(user);
             ValidateId(id);

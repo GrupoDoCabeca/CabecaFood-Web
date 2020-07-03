@@ -1,6 +1,7 @@
 ﻿using BusinessLogicalLayer.Models.OrderModel;
 using Domain.Entities;
 using Shared;
+using System.Linq;
 
 namespace BusinessLogicalLayer.CustomsAutoMapper
 {
@@ -13,7 +14,9 @@ namespace BusinessLogicalLayer.CustomsAutoMapper
 
         public static OrderResponseModel OrderToOrderResponse(Order order)
         {
-            return Map.ChangeValues<Order, OrderResponseModel>(order);
+            var orderResponse = Map.ChangeValues<Order, OrderResponseModel>(order);
+            orderResponse.Snacks = order.Snacks.Select(x => SnackMap.SnackToSnackResponseModel(x)).ToList();
+            return orderResponse;
         }
     }
 }
