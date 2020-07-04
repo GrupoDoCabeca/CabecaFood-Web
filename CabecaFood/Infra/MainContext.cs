@@ -16,6 +16,8 @@ namespace Infra
         public DbSet<Order> Order { get; set; }
         public DbSet<Snack> Snack { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Restaurant> Restaurant { get; set; }
+        public DbSet<CommentRestaurant> CommentRestaurant { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -46,9 +46,10 @@ namespace Domain.FluentValidations
                 .Length(2, 100).WithMessage("Estado deve conter entre 2 á 100 caracteres").OverridePropertyName("Estado");
 
             RuleFor(a => a.UserId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
-                .NotEmpty().WithMessage("Usuario deve ser informado").OverridePropertyName("UserId")
-                .GreaterThan(0).WithMessage("Usuario invalido").OverridePropertyName("UserId");
+                .GreaterThan(0).WithMessage("Usuario invalido").OverridePropertyName("Usuario");
+
+            RuleFor(a => a.RestaurantId)
+                 .GreaterThan(0).WithMessage("Usuario invalido").OverridePropertyName("Restaurant");
         }
     }
 }

@@ -2,9 +2,7 @@
 using BusinessLogicalLayer.IServices;
 using BusinessLogicalLayer.Models.UserModel;
 using Domain;
-using Domain.DTO;
 using Infra.IRepositories;
-using Shared;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,8 +25,6 @@ namespace BusinessLogicalLayer.Services
 
             if (user == null)
                 AddError("Usuario", "Não encontrado");
-
-            HandleError();
 
             var IsEqual = HashService.CompareHash(userPasswordRequestModel.Password, user.Password);
 
@@ -119,22 +115,17 @@ namespace BusinessLogicalLayer.Services
 
         public async Task<UserResponseModel> Update(int id, UserUpdateRequestModel userModel)
         {
-            var user = UserMap.UserUpdateToUser(userModel);
-
-            Validate(user);
-            ValidateId(id);
-
-            HandleError();
 
             var userToUpdate = await _userRepository.GetById(id);
 
-            if (user == null)
+            if (userToUpdate == null)
                 AddError("Usuario", "Não encontrado");
 
             HandleError();
 
-            var userDTO = Map.ChangeValues<User, UserDTO>(user);
-            userToUpdate.Update(userDTO);
+            userToUpdate.Update(userModel.Name, userModel.Email);
+
+            HandleError();
 
             await _userRepository.Update(userToUpdate);
             await _userRepository.Save();

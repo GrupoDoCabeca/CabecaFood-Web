@@ -1,4 +1,5 @@
 ﻿using BusinessLogicalLayer.IServices;
+using BusinessLogicalLayer.Models.DeliveryManModel;
 using BusinessLogicalLayer.Models.DeliveryManMolder;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -63,7 +64,7 @@ namespace ApresentationLayer.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] DeliveryManRequestModel model)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] DeliveryManUpdateModel model)
         {
             try
             {

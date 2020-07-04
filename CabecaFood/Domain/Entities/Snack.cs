@@ -1,5 +1,4 @@
-﻿using Domain.DTO;
-using Domain.FluentValidations;
+﻿using Domain.FluentValidations;
 using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,22 +11,20 @@ namespace Domain.Entities
         public string Name { get; protected set; }
         public double Price { get; protected set; }
         public string Description { get; protected set; }
-
         public int? OrderId { get; protected set; }
-        public virtual Order Order { get; set; }
-
-
-
+        public virtual Order Order { get; protected set; }
+        public int RestaurantId { get; protected set; }
+        public virtual Restaurant Restaurant { get; protected set; }
         //Construtores
         public Snack()
         {
 
         }
-        public Snack(SnackDTO snack)
+        public Snack(string name, string description, double price)
         {
-            this.Name = snack.Name.FormatProps();
-            this.Description = snack.Description.FormatProps();
-            this.Price = snack.Price;
+            this.Name = name?.FormatProps();
+            this.Description = description?.FormatProps();
+            this.Price = price;
         }
 
         //Metodos
@@ -37,11 +34,11 @@ namespace Domain.Entities
             this.OrderId = orderId;
         }
 
-        public void Update(SnackDTO snack)
+        public void Update(string name, string description, double price)
         {
-            this.Name = snack.Name.FormatProps();
-            this.Description = snack.Description.FormatProps();
-            this.Price = snack.Price;
+            this.Name = name?.FormatProps();
+            this.Description = description?.FormatProps();
+            this.Price = price;
         }
 
         public override HashSet<Error> GetErrors()

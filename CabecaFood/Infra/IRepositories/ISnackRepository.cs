@@ -1,9 +1,16 @@
 ﻿using Domain.Entities;
-using Infra.IRepositories.IGenericRepository;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infra.IRepositories
 {
-    public interface ISnackRepository : IGenericRepository<Snack>
+    public interface ISnackRepository
     {
+        Task<ICollection<Snack>> GetByRestaurantId(int restaurantId);
+        Task Create(Snack snack);
+        Task<Snack> GetById(int id);
+        Task Update(Snack snack);
+        Task Delete(int id);
+        Task Save();
     }
 }

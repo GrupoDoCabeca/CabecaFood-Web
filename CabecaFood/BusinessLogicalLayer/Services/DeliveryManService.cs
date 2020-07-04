@@ -1,10 +1,9 @@
 ﻿using BusinessLogicalLayer.CustomsAutoMapper;
 using BusinessLogicalLayer.IServices;
+using BusinessLogicalLayer.Models.DeliveryManModel;
 using BusinessLogicalLayer.Models.DeliveryManMolder;
-using Domain.DTO;
 using Domain.Entities;
 using Infra.IRepositories;
-using Shared;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -71,20 +70,14 @@ namespace BusinessLogicalLayer.Services
             return DeliveryManMap.DeliveryManToDeliveryManResponse(deliveryMan);
         }
 
-        public async Task<DeliveryManResponseModel> Update(int id, DeliveryManRequestModel deliveryManModel)
+        public async Task<DeliveryManResponseModel> Update(int id, DeliveryManUpdateModel deliveryManModel)
         {
-            var deliveryMan = DeliveryManMap.DeliveryManRequestModelToDeliveryMan(deliveryManModel);
-
-            ValidateId(id);
-            Validate(deliveryMan);
-
             var deliveryManToUpdate = await _deliveryManRepository.GetById(id);
 
             if (deliveryManToUpdate == null)
-                AddError("Endereco", "Não encontrado");
+                AddError("Entregador", "Não encontrado");
 
-            var deliveryManDTO = Map.ChangeValues<DeliveryMan, DeliveryManDTO>(deliveryMan);
-            deliveryManToUpdate.Update(deliveryManDTO);
+            deliveryManToUpdate.Update(deliveryManModel.Name, deliveryManModel.Salary);
 
             await _deliveryManRepository.Update(deliveryManToUpdate);
             await _deliveryManRepository.Save();

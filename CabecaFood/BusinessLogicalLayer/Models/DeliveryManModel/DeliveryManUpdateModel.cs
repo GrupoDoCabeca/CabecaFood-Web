@@ -1,9 +1,8 @@
-﻿namespace Domain.DTO
+﻿namespace BusinessLogicalLayer.Models.DeliveryManModel
 {
-    public class DeliveryManDTO
+    public class DeliveryManUpdateModel
     {
         public string Name { get; set; }
         public double Salary { get; set; }
-        public string PIS { get; set; }
     }
 }

@@ -6,10 +6,10 @@ namespace BusinessLogicalLayer.IServices
 {
     public interface ISnackService
     {
-        Task<List<SnackResponseModel>> GetAll();
-        Task<SnackResponseModel> GetById(int id);
-        Task<SnackResponseModel> Create(SnackRequestModel snackModel);
-        Task<SnackResponseModel> Update(int id, SnackRequestModel snackModel);
-        Task<SnackResponseModel> Delete(int id);
+        Task<SnackResponseModel> Update(int restaurantId, int id, SnackUpdateModel model);
+        Task<ICollection<SnackResponseModel>> GetByRestaurantId(int restaurantId);
+        Task<SnackResponseModel> Create(int restaurantId, SnackRequestModel model);
+        Task<SnackResponseModel> GetById(int restaurantId, int id);
+        Task<SnackResponseModel> Delete(int restaurantId, int id);
     }
 }

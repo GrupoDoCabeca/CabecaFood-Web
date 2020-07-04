@@ -22,11 +22,11 @@ namespace Infra.Mappings
 
             builder.Property(u => u.Password).HasMaxLength(16).HasColumnType("VARCHAR(255)").IsRequired().HasColumnName("PASSWORD");
 
-            builder.Property(u => u.IsAdmin).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("IS_ADMIN");
+            builder.HasOne(a => a.Address).WithOne(u => u.User).HasForeignKey<Address>(a => a.UserId).IsRequired(false);
 
             builder.HasMany(u => u.Orders).WithOne(o => o.User).HasForeignKey(u => u.UserId);
 
-            builder.HasOne(a => a.Address).WithOne(u => u.User).HasForeignKey<Address>(a => a.UserId).IsRequired(false);
+            builder.HasMany(a => a.Comments).WithOne(u => u.User).HasForeignKey(x => x.UserId).IsRequired();
         }
     }
 }

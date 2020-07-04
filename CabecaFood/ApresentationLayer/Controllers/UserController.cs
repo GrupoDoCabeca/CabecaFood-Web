@@ -125,12 +125,12 @@ namespace ApresentationLayer.Controllers
         }
 
         [HttpPost]
-        [Route("address")]
-        public async Task<IActionResult> CreateAddress([FromBody] AddressRequestModel model)
+        [Route("{userId}/address")]
+        public async Task<IActionResult> CreateAddress([FromRoute] int userId, [FromBody] AddressRequestModel model)
         {
             try
             {
-                var address = await _addressService.Create(model);
+                var address = await _addressService.Create(userId, model, false);
                 return Ok(address);
             }
             catch (Exception ex)
@@ -140,12 +140,12 @@ namespace ApresentationLayer.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/address")]
-        public async Task<IActionResult> GetByUserId([FromRoute] int id)
+        [Route("{userId}/address")]
+        public async Task<IActionResult> GetByUserId([FromRoute] int userId)
         {
             try
             {
-                var address = await _addressService.GetByUserId(id);
+                var address = await _addressService.GetByUserId(userId);
                 return Ok(address);
             }
             catch (Exception ex)
@@ -155,12 +155,12 @@ namespace ApresentationLayer.Controllers
         }
 
         [HttpPut]
-        [Route("address/{id}")]
-        public async Task<IActionResult> UpdateAddress([FromRoute] int id, [FromBody] AddressRequestModel model)
+        [Route("{userId}/address")]
+        public async Task<IActionResult> UpdateAddress([FromRoute] int userId, [FromBody] AddressUpdateModel model)
         {
             try
             {
-                var address = await _addressService.Update(id, model);
+                var address = await _addressService.UpdateAddressByUser(userId, model);
                 return Ok(address);
             }
             catch (Exception ex)

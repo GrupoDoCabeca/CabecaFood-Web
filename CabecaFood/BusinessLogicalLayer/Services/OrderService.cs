@@ -17,13 +17,16 @@ namespace BusinessLogicalLayer.Services
         private readonly IDeliveryManRepository _deliveryManRepository;
         private readonly IUserRepository _userRepository;
         private readonly ISnackRepository _snackRepository;
+        private readonly IRestaurantRepository _restaurantRepository;
 
-        public OrderService(IOrderRepository orderRepository, IDeliveryManRepository deliveryManRepository, IUserRepository userRepository, ISnackRepository snackRepository)
+
+        public OrderService(IOrderRepository orderRepository, IDeliveryManRepository deliveryManRepository, IUserRepository userRepository, ISnackRepository snackRepository, IRestaurantRepository restaurantRepository)
         {
             _orderRepository = orderRepository;
             _deliveryManRepository = deliveryManRepository;
             _userRepository = userRepository;
             _snackRepository = snackRepository;
+            _restaurantRepository = restaurantRepository;
         }
 
         public async Task<OrderResponseModel> AddDelivery(int orderId, int deliveryId)
@@ -36,18 +39,14 @@ namespace BusinessLogicalLayer.Services
             var deliveryMan = await _deliveryManRepository.GetById(deliveryId);
 
             if (deliveryMan == null)
-            {
                 AddError("Entregador", "Não encontrado");
-                HandleError();
-            }
 
             var order = await _orderRepository.GetById(orderId);
 
             if (order == null)
-            {
                 AddError("Pedido", "Não encontrado");
-                HandleError();
-            }
+
+            HandleError();
 
             order.AddDeliveryMan(deliveryId);
 
@@ -57,8 +56,9 @@ namespace BusinessLogicalLayer.Services
             return OrderMap.OrderToOrderResponse(order);
         }
 
-        public async Task<OrderResponseModel> Create(OrderRequestModel orderModel)
+        public async Task<OrderResponseModel> Create(int restaurantId, OrderRequestModel orderModel)
         {
+            orderModel.RestaurantId = restaurantId;
             var order = OrderMap.OrderRequestToOrder(orderModel);
 
             Validate(order);
@@ -67,6 +67,11 @@ namespace BusinessLogicalLayer.Services
 
             if (user == null)
                 AddError("Usuario", "Não encontrado");
+
+            var restaurant = await _restaurantRepository.GetById(orderModel.RestaurantId);
+
+            if (restaurant == null)
+                AddError("Restaurante", "Não encontrado");
 
             HandleError();
 
@@ -80,11 +85,10 @@ namespace BusinessLogicalLayer.Services
 
                     var snack = await _snackRepository.GetById(snackId);
 
-                    if (snack == null)
-                    {
+                    if (snack == null || snack.RestaurantId != restaurantId)
                         AddError("Lanche", "Não encontrado");
-                        HandleError();
-                    }
+
+                    HandleError();
 
                     snack.SetOrderId(order.Id);
                     await _snackRepository.Update(snack);
@@ -97,16 +101,12 @@ namespace BusinessLogicalLayer.Services
             return OrderMap.OrderToOrderResponse(order);
         }
 
-        public async Task<OrderResponseModel> Delete(int id)
+        public async Task<OrderResponseModel> Delete(int restaurantId, int id)
         {
-            ValidateId(id);
-
-            HandleError();
-
             var order = await _orderRepository.GetById(id);
 
-            if (order == null)
-                AddError("Pedido", "Não encontrado");
+            if (order == null || order.RestaurantId != restaurantId)
+                AddError("Pedido", "Invalido");
 
             HandleError();
 
@@ -116,26 +116,22 @@ namespace BusinessLogicalLayer.Services
             return OrderMap.OrderToOrderResponse(order);
         }
 
-        public async Task<List<OrderResponseModel>> GetAll()
+        public async Task<OrderResponseModel> GetById(int restaurantId, int id)
         {
-            var orders = await _orderRepository.GetAll();
-            return orders.Select(x => OrderMap.OrderToOrderResponse(x)).ToList();
-        }
-
-        public async Task<OrderResponseModel> GetById(int id)
-        {
-            ValidateId(id);
-
-            HandleError();
-
             var order = await _orderRepository.GetById(id);
 
-            if (order == null)
-                AddError("Pedido", "Não encontrado");
+            if (order == null || order.RestaurantId != restaurantId)
+                AddError("Pedido", "Invalido");
 
             HandleError();
 
             return OrderMap.OrderToOrderResponse(order);
+        }
+
+        public async Task<List<OrderResponseModel>> GetByRestaurantId(int restaurantId)
+        {
+            var orders = await _orderRepository.GetByRestaurantId(restaurantId);
+            return orders.Select(x => OrderMap.OrderToOrderResponse(x)).ToList();
         }
 
         public override void Validate(Order entity)

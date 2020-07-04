@@ -1,6 +1,6 @@
-﻿namespace Domain.DTO
+﻿namespace BusinessLogicalLayer.Models.SnackModel
 {
-    public class SnackDTO
+    public class SnackUpdateModel
     {
         public string Name { get; set; }
         public double Price { get; set; }

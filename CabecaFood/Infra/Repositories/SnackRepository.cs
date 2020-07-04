@@ -16,10 +16,9 @@ namespace Infra.Repositories
         {
             _context = context;
         }
-
-        public async Task Create(Snack entity)
+        public async Task Create(Snack snack)
         {
-            await _context.Snack.AddAsync(entity);
+            await _context.Snack.AddAsync(snack);
         }
 
         public async Task Delete(int id)
@@ -29,24 +28,21 @@ namespace Infra.Repositories
             _context.Snack.Update(entity).State = EntityState.Modified;
         }
 
-        public async Task<IEnumerable<Snack>> GetAll()
-        {
-            return await _context.Snack.Where(x => !x.Deleted).ToListAsync();
-        }
-
         public async Task<Snack> GetById(int id)
         {
             return await _context.Snack.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
         }
 
-        public async Task Save()
+        public async Task<ICollection<Snack>> GetByRestaurantId(int restaurantId)
         {
-            await _context.SaveChangesAsync();
+            return await _context.Snack.Where(x => x.RestaurantId == restaurantId && !x.Deleted).ToListAsync();
         }
 
-        public async Task Update(Snack entity)
+        public async Task Save() => _context.SaveChangesAsync();
+
+        public async Task Update(Snack snack)
         {
-            _context.Snack.Update(entity);
+            _context.Snack.Update(snack);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace BusinessLogicalLayer.Models.OrderModel
     {
         public int UserId { get; set; }
         public int? DeliveryManId { get; set; }
-        public ICollection<int> SnacksId { get; set; } = new List<int>();
+        public int RestaurantId { get; set; }
+        public ICollection<int> SnacksId { get; set; }
     }
 }

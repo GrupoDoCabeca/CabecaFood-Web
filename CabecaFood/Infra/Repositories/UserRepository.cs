@@ -36,7 +36,7 @@ namespace Infra.Repositories
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.User.Include(x => x.Address).Where(x => !x.Deleted).ToListAsync();
+            return await _context.User.Where(x => !x.Deleted).ToListAsync();
         }
 
         public async Task<User> GetById(int id)

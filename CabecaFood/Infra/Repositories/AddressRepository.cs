@@ -30,6 +30,11 @@ namespace Infra.Repositories
             return await _context.Address.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<Address> GetByRestaurantId(int restaurantId)
+        {
+            return await _context.Address.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId);
+        }
+
         public async Task<Address> GetByUserId(int userId)
         {
             return await _context.Address.FirstOrDefaultAsync(x => x.UserId == userId);

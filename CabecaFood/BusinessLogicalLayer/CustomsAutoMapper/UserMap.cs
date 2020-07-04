@@ -13,14 +13,7 @@ namespace BusinessLogicalLayer.CustomsAutoMapper
 
         public static UserResponseModel UserToUserResponse(User user)
         {
-            var userResponse = Map.ChangeValues<User, UserResponseModel>(user);
-            return userResponse;
-        }
-
-        public static User UserUpdateToUser(UserUpdateRequestModel user)
-        {
-            var userResponse = Map.ChangeValues<UserUpdateRequestModel, User>(user);
-            return userResponse;
+            return Map.ChangeValues<User, UserResponseModel>(user);
         }
     }
 }

@@ -26,6 +26,8 @@ namespace Infra.Mappings
             builder.Property(a => a.Number).IsRequired().HasColumnType("VARCHAR(6)").HasColumnName("NUMBER");
 
             builder.HasOne(a => a.User).WithOne(u => u.Address).HasForeignKey<User>(a => a.AddressId).IsRequired(false);
+
+            builder.HasOne(a => a.Restaurant).WithOne(r => r.Address).HasForeignKey<Restaurant>(a => a.AddressId).IsRequired(false);
         }
     }
 }

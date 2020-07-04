@@ -24,7 +24,7 @@ namespace Domain.FluentValidations
                .Cascade(CascadeMode.StopOnFirstFailure)
                .NotEmpty().WithMessage("Email deve ser informado").OverridePropertyName("Email")
                .NotNull().WithMessage("Email deve ser informado").OverridePropertyName("Email")
-               .Length(8, 100).WithMessage("Email deve conter entre 2 a 100 caracteres").OverridePropertyName("Email");
+               .EmailAddress().WithMessage("Email invalido").OverridePropertyName("Email");
 
             RuleFor(d => d.Password)
                 .Cascade(CascadeMode.StopOnFirstFailure)

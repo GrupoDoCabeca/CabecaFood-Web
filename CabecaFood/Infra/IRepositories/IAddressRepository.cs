@@ -11,6 +11,7 @@ namespace Infra.Repositories.IRepositories
         Task Create(Address entity);
         Task Update(Address entity);
         Task<Address> GetByUserId(int userId);
+        Task<Address> GetByRestaurantId(int restaurantId);
         Task Save();
 
     }

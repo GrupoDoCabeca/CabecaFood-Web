@@ -6,9 +6,9 @@ namespace BusinessLogicalLayer.CustomsAutoMapper
 {
     public static class AddressMap
     {
-        public static Address AddressRequestToAddress(AddressRequestModel addressModel)
+        public static Address AddressRequestToAddress(AddressRequestModel model)
         {
-            return Map.ChangeValues<AddressRequestModel, Address>(addressModel);
+            return Map.ChangeValues<AddressRequestModel, Address>(model);
         }
 
         public static AddressResponseModel AddressToAddressResponse(Address address)

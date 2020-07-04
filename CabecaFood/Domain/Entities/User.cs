@@ -1,5 +1,4 @@
-﻿using Domain.DTO;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.FluentValidations;
 using Domain.FluentValidations.HBSIS.Padawan.Produtos.Domain;
 using System.Collections.Generic;
@@ -13,12 +12,10 @@ namespace Domain
         public string Name { get; protected set; }
         public string Email { get; protected set; }
         public string Password { get; protected set; }
-        public bool IsAdmin { get; protected set; }
-
         public int? AddressId { get; protected set; }
         public virtual Address Address { get; protected set; }
-
         public ICollection<Order> Orders { get; protected set; }
+        public ICollection<CommentRestaurant> Comments { get; protected set; }
 
         //Construtores
         public User()
@@ -26,22 +23,18 @@ namespace Domain
 
         }
 
-        public User(UserDTO user)
+        public User(string name, string email, string password)
         {
-            this.Name = user.Name;
-            this.Email = user.Email;
-            this.Password = user.Password;
-            this.IsAdmin = user.IsAdmin;
-            this.AddressId = user.AddressId;
+            this.Name = name?.FormatProps();
+            this.Email = email?.FormatProps();
+            this.Password = password;
         }
 
         //Metodos
-        public void Update(UserDTO user)
+        public void Update(string name, string email)
         {
-            this.Name = user.Name;
-            this.Email = user.Email;
-            this.IsAdmin = user.IsAdmin;
-            this.AddressId = user.AddressId;
+            this.Name = name?.FormatProps();
+            this.Email = email?.FormatProps();
         }
 
         public void ChangePassword(string password)

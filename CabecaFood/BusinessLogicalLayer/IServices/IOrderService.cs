@@ -6,10 +6,10 @@ namespace BusinessLogicalLayer.IServices
 {
     public interface IOrderService
     {
-        Task<List<OrderResponseModel>> GetAll();
-        Task<OrderResponseModel> GetById(int id);
-        Task<OrderResponseModel> Create(OrderRequestModel orderModel);
+        Task<List<OrderResponseModel>> GetByRestaurantId(int restaurantId);
+        Task<OrderResponseModel> GetById(int restaurantId, int id);
+        Task<OrderResponseModel> Create(int restaurantId, OrderRequestModel orderModel);
         Task<OrderResponseModel> AddDelivery(int orderId, int deliveryId);
-        Task<OrderResponseModel> Delete(int id);
+        Task<OrderResponseModel> Delete(int restaurantId, int id);
     }
 }
