@@ -35,10 +35,11 @@ namespace BusinessLogicalLayer.Services
             _order_SnackRepository = order_SnackRepository;
         }
 
-        public async Task<OrderResponseModel> AddDelivery(int orderId, int deliveryId)
+        public async Task<OrderResponseModel> AddDelivery(int restaurantId, int orderId, int deliveryId)
         {
             ValidateId(orderId);
             ValidateId(deliveryId);
+            ValidateId(restaurantId);
 
             HandleError();
 
@@ -49,7 +50,7 @@ namespace BusinessLogicalLayer.Services
 
             var order = await _orderRepository.GetById(orderId);
 
-            if (order == null)
+            if (order == null || order.RestaurantId != restaurantId)
                 AddError("Pedido", "Não encontrado");
 
             HandleError();
@@ -139,6 +140,40 @@ namespace BusinessLogicalLayer.Services
         {
             var orders = await _orderRepository.GetByRestaurantId(restaurantId);
             return orders.Select(x => OrderMap.OrderToOrderResponse(x)).ToList();
+        }
+
+        public async Task<List<OrderResponseModel>> GetPaidsByRestaurantId(int restaurantId)
+        {
+            var orders = await _orderRepository.GetPaidsByRestaurantId(restaurantId);
+            return orders.Select(x => OrderMap.OrderToOrderResponse(x)).ToList();
+        }
+
+        public async Task<List<OrderResponseModel>> GetUnPaidsByRestaurantId(int restaurantId)
+        {
+            var orders = await _orderRepository.GetUnPaidsByRestaurantId(restaurantId);
+            return orders.Select(x => OrderMap.OrderToOrderResponse(x)).ToList();
+        }
+
+        public async Task<OrderResponseModel> PayOrder(int restaurantId, int id)
+        {
+            var order = await _orderRepository.GetById(id);
+
+            if (order == null || order.RestaurantId != restaurantId)
+                AddError("Pedido", "Invalido");
+
+            HandleError();
+
+            if (order.IsPaid)
+                AddError("Pedido", "Já pago");
+
+            HandleError();
+
+            order.Pay();
+
+            await _orderRepository.Update(order);
+            await _orderRepository.Save();
+
+            return OrderMap.OrderToOrderResponse(order);
         }
 
         public override void Validate(Order entity)

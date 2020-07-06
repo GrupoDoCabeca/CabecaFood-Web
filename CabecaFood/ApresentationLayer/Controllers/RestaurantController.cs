@@ -272,6 +272,36 @@ namespace ApresentationLayer.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{restaurantId}/orders/paids")]
+        public async Task<IActionResult> GetOrdersPaid([FromRoute] int restaurantId)
+        {
+            try
+            {
+                var orders = await _orderService.GetPaidsByRestaurantId(restaurantId);
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("{restaurantId}/orders/unpaids")]
+        public async Task<IActionResult> GetOrdersUnPaid([FromRoute] int restaurantId)
+        {
+            try
+            {
+                var orders = await _orderService.GetUnPaidsByRestaurantId(restaurantId);
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
         [HttpPost]
         [Route("{restaurantId}/orders")]
         public async Task<IActionResult> CreateOrder([FromRoute] int restaurantId, [FromBody] OrderRequestModel model)
@@ -279,6 +309,21 @@ namespace ApresentationLayer.Controllers
             try
             {
                 var order = await _orderService.Create(restaurantId, model);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpPut]
+        [Route("{restaurantId}/orders/{id}/deliverymans")]
+        public async Task<IActionResult> AddDeliveryMan([FromRoute] int restaurantId, [FromRoute] int id, [FromBody] int deliveryManId)
+        {
+            try
+            {
+                var order = await _orderService.AddDelivery(restaurantId, id, deliveryManId);
                 return Ok(order);
             }
             catch (Exception ex)
@@ -309,6 +354,21 @@ namespace ApresentationLayer.Controllers
             try
             {
                 var order = await _orderService.Delete(restaurantId, id);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpPut]
+        [Route("{restaurantId}/orders/{id}")]
+        public async Task<IActionResult> PayOrder([FromRoute] int restaurantId, [FromRoute] int id)
+        {
+            try
+            {
+                var order = await _orderService.PayOrder(restaurantId, id);
                 return Ok(order);
             }
             catch (Exception ex)

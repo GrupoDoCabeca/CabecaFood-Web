@@ -28,7 +28,6 @@ namespace Domain.Entities
         }
 
         //Metodos
-
         public void Update(string name, string description, double price)
         {
             this.Name = name?.FormatProps();

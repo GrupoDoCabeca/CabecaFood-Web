@@ -9,7 +9,6 @@ namespace Infra.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-
         private MainContext _context;
 
         public OrderRepository(MainContext context)
@@ -42,6 +41,16 @@ namespace Infra.Repositories
         public async Task<ICollection<Order>> GetByRestaurantId(int restaurantId)
         {
             return await _context.Order.Where(x => !x.Deleted && x.RestaurantId == restaurantId).ToListAsync();
+        }
+
+        public async Task<ICollection<Order>> GetPaidsByRestaurantId(int restaurantId)
+        {
+            return await _context.Order.Where(x => !x.Deleted && x.RestaurantId == restaurantId && x.IsPaid).ToListAsync();
+        }
+
+        public async Task<ICollection<Order>> GetUnPaidsByRestaurantId(int restaurantId)
+        {
+            return await _context.Order.Where(x => !x.Deleted && x.RestaurantId == restaurantId && !x.IsPaid).ToListAsync();
         }
 
         public async Task Save()

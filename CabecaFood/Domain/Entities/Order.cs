@@ -34,6 +34,11 @@ namespace Domain.Entities
             this.DeliveryManId = deliveryManId;
         }
 
+        public void Pay()
+        {
+            this.IsPaid = true;
+        }
+
         public void SetRestaurantId(int restaurantId)
         {
             this.RestaurantId = restaurantId;

@@ -51,6 +51,13 @@ namespace BusinessLogicalLayer.Services
 
             Validate(user);
 
+            var exist = await _userRepository.EmailExist(user);
+
+            if (exist)
+                AddError("Email", "Ja existe");
+
+            HandleError();
+
             user.HashPassword();
 
             await _userRepository.Create(user);
@@ -137,11 +144,6 @@ namespace BusinessLogicalLayer.Services
         {
             if (entity.IsInvalid())
                 AddErrors(entity.GetErrors());
-
-            var exist = _userRepository.EmailExist(entity).Result;
-
-            if (exist)
-                AddError("Email", "Ja existe");
 
             HandleError();
         }

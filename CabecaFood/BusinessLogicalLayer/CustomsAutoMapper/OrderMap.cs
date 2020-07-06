@@ -16,7 +16,9 @@ namespace BusinessLogicalLayer.CustomsAutoMapper
             {
                 Id = order.Id,
                 UserId = order.UserId,
-                RestaurantId = order.RestaurantId
+                RestaurantId = order.RestaurantId,
+                IsPaid = order.IsPaid,
+                DeliveryManId = order.DeliveryManId
             };
         }
     }

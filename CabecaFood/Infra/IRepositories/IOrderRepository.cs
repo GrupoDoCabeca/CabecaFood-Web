@@ -8,5 +8,7 @@ namespace Infra.IRepositories
     public interface IOrderRepository : IGenericRepository<Order>
     {
         Task<ICollection<Order>> GetByRestaurantId(int restaurantId);
+        Task<ICollection<Order>> GetPaidsByRestaurantId(int restaurantId);
+        Task<ICollection<Order>> GetUnPaidsByRestaurantId(int restaurantId);
     }
 }
