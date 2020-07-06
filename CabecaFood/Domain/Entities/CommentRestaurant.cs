@@ -33,6 +33,11 @@ namespace Domain.Entities
             IsGood = isGood;
         }
 
+        public void SetRestaurantId(int restaurantId)
+        {
+            this.RestaurantId = restaurantId;
+        }
+
         public override HashSet<Error> GetErrors()
         {
             return new CommentRestaurantValidation().CustomValidate(this);

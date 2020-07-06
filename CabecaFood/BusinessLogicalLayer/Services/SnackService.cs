@@ -16,16 +16,25 @@ namespace BusinessLogicalLayer.Services
         private readonly IRestaurantRepository _restaurantRepository;
 
 
-        public SnackService(ISnackRepository snackRepository)
+        public SnackService(ISnackRepository snackRepository, IRestaurantRepository restaurantRepository)
         {
             _snackRepository = snackRepository;
+            _restaurantRepository = restaurantRepository;
         }
 
         public async Task<SnackResponseModel> Create(int restaurantId, SnackRequestModel model)
         {
             var snack = SnackMap.SnackRequestToSnack(model);
+            snack.SetRestaurantId(restaurantId);
 
             Validate(snack);
+
+            var restaurant = await _restaurantRepository.GetById(restaurantId);
+
+            if (restaurant == null)
+                AddError("Restaurante", "Invalido");
+
+            HandleError();
 
             await _snackRepository.Create(snack);
             await _snackRepository.Save();
@@ -82,6 +91,8 @@ namespace BusinessLogicalLayer.Services
 
             snack.Update(model.Name, model.Description, model.Price);
 
+            Validate(snack);
+
             await _snackRepository.Update(snack);
             await _snackRepository.Save();
 
@@ -92,11 +103,6 @@ namespace BusinessLogicalLayer.Services
         {
             if (entity.IsInvalid())
                 AddErrors(entity.GetErrors());
-
-            var restaurant = _restaurantRepository.GetById(entity.RestaurantId);
-
-            if (restaurant.Result == null)
-                AddError("Restaurante", "Invalido");
 
             HandleError();
         }

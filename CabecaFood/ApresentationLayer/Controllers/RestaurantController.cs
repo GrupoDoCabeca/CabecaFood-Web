@@ -1,5 +1,6 @@
 ﻿using BusinessLogicalLayer.IServices;
 using BusinessLogicalLayer.Models.AddressModel;
+using BusinessLogicalLayer.Models.CommentRestaurantModel;
 using BusinessLogicalLayer.Models.OrderModel;
 using BusinessLogicalLayer.Models.RestaurantModel;
 using BusinessLogicalLayer.Models.SnackModel;
@@ -256,8 +257,6 @@ namespace ApresentationLayer.Controllers
             }
         }
 
-        //
-
         [HttpGet]
         [Route("{restaurantId}/orders")]
         public async Task<IActionResult> GetOrders([FromRoute] int restaurantId)
@@ -311,6 +310,81 @@ namespace ApresentationLayer.Controllers
             {
                 var order = await _orderService.Delete(restaurantId, id);
                 return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("{restaurantId}/comments")]
+        public async Task<IActionResult> GetComments([FromRoute] int restaurantId)
+        {
+            try
+            {
+                var comments = await _commentRestaurantService.GetByRestaurantId(restaurantId);
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("{restaurantId}/comments")]
+        public async Task<IActionResult> CreateComment([FromRoute] int restaurantId, [FromBody] CommentRestaurantRequestModel model)
+        {
+            try
+            {
+                var comment = await _commentRestaurantService.Create(restaurantId, model);
+                return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("{restaurantId}/comments/{id}")]
+        public async Task<IActionResult> GetCommentById([FromRoute] int restaurantId, [FromRoute] int id)
+        {
+            try
+            {
+                var comment = await _commentRestaurantService.GetById(restaurantId, id);
+                return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{restaurantId}/comments/{id}")]
+        public async Task<IActionResult> DeleteComment([FromRoute] int restaurantId, [FromRoute] int id)
+        {
+            try
+            {
+                var comment = await _commentRestaurantService.Delete(restaurantId, id);
+                return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                return HandleControllerErrors(ex);
+            }
+        }
+
+        [HttpPut]
+        [Route("{restaurantId}/comments/{id}")]
+        public async Task<IActionResult> UpdateComment([FromRoute] int restaurantId, [FromBody] CommentUpdateModel model, [FromRoute] int id)
+        {
+            try
+            {
+                var comment = await _commentRestaurantService.Update(restaurantId, model, id);
+                return Ok(comment);
             }
             catch (Exception ex)
             {

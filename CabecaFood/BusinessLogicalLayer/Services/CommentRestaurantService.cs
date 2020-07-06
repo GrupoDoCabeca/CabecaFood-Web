@@ -22,11 +22,16 @@ namespace BusinessLogicalLayer.Services
             _userRepository = userRepository;
         }
 
-        public async Task<CommentRestaurantResponseModel> Create(CommentRestaurantRequestModel commentModel)
+        public async Task<CommentRestaurantResponseModel> Create(int restaurantId, CommentRestaurantRequestModel commentModel)
         {
             var comment = CommentRestaurantMap.CommentRestaurantRequestToCommentRestaurant(commentModel);
+            comment.SetRestaurantId(restaurantId);
 
             Validate(comment);
+            await ValidateRestaurantExist(comment.RestaurantId);
+            await ValidateUserExist(comment.UserId);
+
+            HandleError();
 
             await _commentRestaurantRepository.Create(comment);
             await _commentRestaurantRepository.Save();
@@ -34,11 +39,11 @@ namespace BusinessLogicalLayer.Services
             return CommentRestaurantMap.CommentRestaurantToCommentRestaurantResponse(comment);
         }
 
-        public async Task<CommentRestaurantResponseModel> Delete(int id)
+        public async Task<CommentRestaurantResponseModel> Delete(int restaurantId, int id)
         {
             var comment = await _commentRestaurantRepository.GetById(id);
 
-            if (comment == null)
+            if (comment == null || comment.RestaurantId != restaurantId)
                 AddError("Comentario", "Não encontrado");
 
             HandleError();
@@ -55,11 +60,11 @@ namespace BusinessLogicalLayer.Services
             return comments.Select(comment => CommentRestaurantMap.CommentRestaurantToCommentRestaurantResponse(comment)).ToList();
         }
 
-        public async Task<CommentRestaurantResponseModel> GetById(int id)
+        public async Task<CommentRestaurantResponseModel> GetById(int restaurantId, int id)
         {
             var comment = await _commentRestaurantRepository.GetById(id);
 
-            if (comment == null)
+            if (comment == null || comment.RestaurantId != restaurantId)
                 AddError("Comentario", "Não encontrado");
 
             HandleError();
@@ -78,11 +83,11 @@ namespace BusinessLogicalLayer.Services
             return comments.Select(comment => CommentRestaurantMap.CommentRestaurantToCommentRestaurantResponse(comment)).ToList();
         }
 
-        public async Task<CommentRestaurantResponseModel> Update(int id, CommentUpdateModel commentModel)
+        public async Task<CommentRestaurantResponseModel> Update(int restaurantId, CommentUpdateModel commentModel, int id)
         {
             var commentToUpdate = await _commentRestaurantRepository.GetById(id);
 
-            if (commentToUpdate == null)
+            if (commentToUpdate == null || commentToUpdate.RestaurantId != restaurantId)
                 AddError("Comentario", "Não encontrado");
 
             HandleError();
@@ -98,20 +103,26 @@ namespace BusinessLogicalLayer.Services
 
         }
 
+        private async Task ValidateRestaurantExist(int restaurantId)
+        {
+            var restaurantExist = await _restaurantRepository.GetById(restaurantId);
+
+            if (restaurantExist == null)
+                AddError("Restaurante", "Não encontrado");
+        }
+
+        private async Task ValidateUserExist(int userId)
+        {
+            var userExist = await _userRepository.GetById(userId);
+
+            if (userExist == null)
+                AddError("Usuario", "Não encontrado");
+        }
+
         public override void Validate(CommentRestaurant entity)
         {
             if (entity.IsInvalid())
                 AddErrors(entity.GetErrors());
-
-            var restaurantExist = _restaurantRepository.GetById(entity.RestaurantId);
-
-            var userExist = _userRepository.GetById(entity.UserId);
-
-            if (userExist.Result == null)
-                AddError("Usuario", "Não encontrado");
-
-            if (restaurantExist.Result == null)
-                AddError("Restaurante", "Não encontrado");
 
             HandleError();
         }

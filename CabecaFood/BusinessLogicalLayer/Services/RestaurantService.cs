@@ -53,6 +53,8 @@ namespace BusinessLogicalLayer.Services
 
             restaurant.HashPassword();
 
+            HandleError();
+
             await _restaurantRepository.Create(restaurant);
             await _restaurantRepository.Save();
 

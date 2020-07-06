@@ -12,11 +12,12 @@ namespace Domain.Entities
         public DateTime DateTime { get; protected set; }
         public int UserId { get; protected set; }
         public virtual User User { get; protected set; }
-        public virtual ICollection<Snack> Snacks { get; protected set; }
+        public virtual ICollection<Order_Snack> Snacks { get; protected set; }
         public int? DeliveryManId { get; protected set; }
         public virtual DeliveryMan DeliveryMan { get; protected set; }
         public int RestaurantId { get; protected set; }
         public virtual Restaurant Restaurant { get; protected set; }
+        public bool IsPaid { get; protected set; }
 
         //Construtores
         public Order()
@@ -33,6 +34,15 @@ namespace Domain.Entities
             this.DeliveryManId = deliveryManId;
         }
 
+        public void SetRestaurantId(int restaurantId)
+        {
+            this.RestaurantId = restaurantId;
+        }
+
+        public void SetUserId(int userId)
+        {
+            this.UserId = userId;
+        }
 
         public override HashSet<Error> GetErrors()
         {

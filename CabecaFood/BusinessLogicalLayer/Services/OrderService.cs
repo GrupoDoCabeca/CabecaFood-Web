@@ -18,15 +18,21 @@ namespace BusinessLogicalLayer.Services
         private readonly IUserRepository _userRepository;
         private readonly ISnackRepository _snackRepository;
         private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IOrder_SnackRepository _order_SnackRepository;
 
-
-        public OrderService(IOrderRepository orderRepository, IDeliveryManRepository deliveryManRepository, IUserRepository userRepository, ISnackRepository snackRepository, IRestaurantRepository restaurantRepository)
+        public OrderService(IOrderRepository orderRepository,
+                            IDeliveryManRepository deliveryManRepository,
+                            IUserRepository userRepository,
+                            ISnackRepository snackRepository,
+                            IRestaurantRepository restaurantRepository,
+                            IOrder_SnackRepository order_SnackRepository)
         {
             _orderRepository = orderRepository;
             _deliveryManRepository = deliveryManRepository;
             _userRepository = userRepository;
             _snackRepository = snackRepository;
             _restaurantRepository = restaurantRepository;
+            _order_SnackRepository = order_SnackRepository;
         }
 
         public async Task<OrderResponseModel> AddDelivery(int orderId, int deliveryId)
@@ -58,8 +64,8 @@ namespace BusinessLogicalLayer.Services
 
         public async Task<OrderResponseModel> Create(int restaurantId, OrderRequestModel orderModel)
         {
-            orderModel.RestaurantId = restaurantId;
             var order = OrderMap.OrderRequestToOrder(orderModel);
+            order.SetRestaurantId(restaurantId);
 
             Validate(order);
 
@@ -68,33 +74,34 @@ namespace BusinessLogicalLayer.Services
             if (user == null)
                 AddError("Usuario", "Não encontrado");
 
-            var restaurant = await _restaurantRepository.GetById(orderModel.RestaurantId);
+            var restaurant = await _restaurantRepository.GetById(restaurantId);
 
             if (restaurant == null)
                 AddError("Restaurante", "Não encontrado");
 
             HandleError();
 
-            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _orderRepository.Create(order);
                 await _orderRepository.Save();
 
-                foreach (var snackId in orderModel.SnacksId)
+                foreach (var snack in orderModel.Snacks)
                 {
 
-                    var snack = await _snackRepository.GetById(snackId);
+                    var snackOrder = await _snackRepository.GetById(snack.SnackId);
 
-                    if (snack == null || snack.RestaurantId != restaurantId)
+                    if (snackOrder == null || snackOrder.RestaurantId != restaurantId)
                         AddError("Lanche", "Não encontrado");
 
                     HandleError();
 
-                    snack.SetOrderId(order.Id);
-                    await _snackRepository.Update(snack);
+                    var snack_order = new Order_Snack(order.Id, snackOrder.Id, snack.Quantity);
+
+                    await _order_SnackRepository.Create(snack_order);
                 }
 
-                await _snackRepository.Save();
+                await _order_SnackRepository.Save();
                 scope.Complete();
             }
 

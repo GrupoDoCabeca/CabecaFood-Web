@@ -20,8 +20,6 @@ namespace Infra.Mappings
 
             builder.Property(s => s.Description).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("DESCRIPTION");
 
-            builder.HasOne(o => o.Order).WithMany(u => u.Snacks).HasForeignKey(o => o.OrderId).IsRequired(false);
-
             builder.HasOne(o => o.Restaurant).WithMany(u => u.Snacks).HasForeignKey(o => o.RestaurantId).IsRequired(false);
         }
     }

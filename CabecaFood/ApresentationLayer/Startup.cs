@@ -51,8 +51,7 @@ namespace ApresentationLayer
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
             services.AddScoped<ICommentRestaurantRepository, CommentRestaurantRepository>();
-
-
+            services.AddScoped<IOrder_SnackRepository, Order_SnackRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,10 +11,10 @@ namespace Domain.Entities
         public string Name { get; protected set; }
         public double Price { get; protected set; }
         public string Description { get; protected set; }
-        public int? OrderId { get; protected set; }
-        public virtual Order Order { get; protected set; }
-        public int RestaurantId { get; protected set; }
+        public int? RestaurantId { get; protected set; }
         public virtual Restaurant Restaurant { get; protected set; }
+        public virtual ICollection<Order_Snack> Orders { get; protected set; }
+
         //Construtores
         public Snack()
         {
@@ -29,16 +29,16 @@ namespace Domain.Entities
 
         //Metodos
 
-        public void SetOrderId(int orderId)
-        {
-            this.OrderId = orderId;
-        }
-
         public void Update(string name, string description, double price)
         {
             this.Name = name?.FormatProps();
             this.Description = description?.FormatProps();
             this.Price = price;
+        }
+
+        public void SetRestaurantId(int restaurantId)
+        {
+            this.RestaurantId = restaurantId;
         }
 
         public override HashSet<Error> GetErrors()
