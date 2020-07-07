@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200703231801_tst.cs" />
-    <Compile Remove="Migrations\20200703231801_tst.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4">
       <PrivateAssets>all</PrivateAssets>

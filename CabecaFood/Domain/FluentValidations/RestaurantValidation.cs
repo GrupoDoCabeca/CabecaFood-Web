@@ -34,7 +34,7 @@ namespace Domain.FluentValidations
                .Cascade(CascadeMode.StopOnFirstFailure)
                .NotEmpty().WithMessage("Senha deve ser informado").OverridePropertyName("Senha")
                .NotNull().WithMessage("Senha deve ser informado").OverridePropertyName("Senha")
-               .Length(8, 16).WithMessage("Senha deve conter entre 8 a 100 caracteres").OverridePropertyName("Senha");
+               .Length(8, 16).WithMessage("Senha deve conter entre 8 a 15 caracteres").OverridePropertyName("Senha");
         }
     }
 }

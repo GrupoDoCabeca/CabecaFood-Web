@@ -201,7 +201,7 @@ namespace Infra.Migrations
                     b.ToTable("ORDER");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Orders_Snacks", b =>
+            modelBuilder.Entity("Domain.Entities.Order_Snack", b =>
                 {
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -392,7 +392,7 @@ namespace Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Orders_Snacks", b =>
+            modelBuilder.Entity("Domain.Entities.Order_Snack", b =>
                 {
                     b.HasOne("Domain.Entities.Order", "Order")
                         .WithMany("Snacks")
