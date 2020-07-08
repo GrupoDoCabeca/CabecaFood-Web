@@ -50,6 +50,7 @@ namespace BusinessLogicalLayer.Services
             var restaurant = RestaurantMap.RestaurantRequestToRestaurant(restaurantModel);
 
             Validate(restaurant);
+            await CnpjExist(restaurant);
 
             restaurant.HashPassword();
 
@@ -132,15 +133,20 @@ namespace BusinessLogicalLayer.Services
             return RestaurantMap.RestaurantToRestaurantResponse(restaurantToUpdate);
         }
 
+        private async Task CnpjExist(Restaurant entity)
+        {
+            var cnpjExist = await _restaurantRepository.CnpjExist(entity);
+
+            if (cnpjExist)
+                AddError("CNPJ", "Ja cadastrado");
+
+            HandleError();
+        }
+
         public override void Validate(Restaurant entity)
         {
             if (entity.IsInvalid())
                 AddErrors(entity.GetErrors());
-
-            var cnpjExist = _restaurantRepository.CnpjExist(entity);
-
-            if (cnpjExist.Result)
-                AddError("CNPJ", "Ja cadastrado");
 
             HandleError();
         }

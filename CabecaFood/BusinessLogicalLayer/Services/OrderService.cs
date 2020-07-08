@@ -72,13 +72,13 @@ namespace BusinessLogicalLayer.Services
 
             var user = await _userRepository.GetById(order.UserId);
 
-            if (user == null)
-                AddError("Usuario", "Não encontrado");
+            if (user == null || user.AddressId == 0)
+                AddError("Usuario", "Invalido");
 
             var restaurant = await _restaurantRepository.GetById(restaurantId);
 
-            if (restaurant == null)
-                AddError("Restaurante", "Não encontrado");
+            if (restaurant == null || restaurant.AddressId == 0)
+                AddError("Restaurante", "Invalido");
 
             HandleError();
 
