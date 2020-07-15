@@ -9,6 +9,7 @@ namespace Domain.Entities
     {
         //Propriedades
         public string Name { get; protected set; }
+        public string ImagePath { get; protected set; }
         public double Price { get; protected set; }
         public string Description { get; protected set; }
         public int? RestaurantId { get; protected set; }
@@ -38,6 +39,11 @@ namespace Domain.Entities
         public void SetRestaurantId(int restaurantId)
         {
             this.RestaurantId = restaurantId;
+        }
+
+        public void SetImagePath(string imagePath)
+        {
+            this.ImagePath = imagePath;
         }
 
         public override HashSet<Error> GetErrors()

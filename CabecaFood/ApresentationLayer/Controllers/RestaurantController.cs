@@ -122,7 +122,7 @@ namespace ApresentationLayer.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] RestaurantLoginRequestModel model)
         {

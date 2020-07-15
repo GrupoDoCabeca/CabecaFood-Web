@@ -9,6 +9,7 @@ namespace Domain.Entities
     {
 
         public string Name { get; protected set; }
+        public string ImagePath { get; protected set; }
         public string CNPJ { get; protected set; }
         public string Password { get; protected set; }
         public string Email { get; protected set; }
@@ -40,6 +41,11 @@ namespace Domain.Entities
         public void ChangePassword(string password)
         {
             this.Password = password;
+        }
+
+        public void SetImagePath(string imagePath)
+        {
+            this.ImagePath = imagePath;
         }
 
         public void HashPassword()
