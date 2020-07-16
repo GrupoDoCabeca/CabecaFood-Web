@@ -6,5 +6,6 @@ namespace BusinessLogicalLayer.Models.SnackModel
     {
         public int Id { get; set; }
         public int RestaurantId { get; set; }
+        public string ImagePath { get; set; }
     }
 }

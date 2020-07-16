@@ -1,14 +1,19 @@
-﻿namespace BusinessLogicalLayer.Utils
+﻿using Microsoft.AspNetCore.Http;
+using System.IO;
+
+namespace BusinessLogicalLayer.Utils
 {
     public static class ImageService
     {
-        //public static string InserImageInFolderAndReturnPat(IFormFile image)
-        //{
-        //    var imageName = new Guid().ToString().ToLower().Replace("-", "");
-        //    var folder = "~/Pictures";
-        //    var pathString = System.IO.Path.Combine(folder, imageName);
+        public static string InsertImageAndReturnPath(IFormFile image)
+        {
+            string path = Path.Combine("~Pictures" + image.FileName);
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                image.CopyTo(stream);
+            }
 
-        //    image.
-        //}
+            return path;
+        }
     }
 }

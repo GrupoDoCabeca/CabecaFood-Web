@@ -4,6 +4,7 @@ using BusinessLogicalLayer.Models.RestaurantModel;
 using BusinessLogicalLayer.Utils;
 using Domain.Entities;
 using Infra.IRepositories;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,7 +46,7 @@ namespace BusinessLogicalLayer.Services
             return RestaurantMap.RestaurantToRestaurantResponse(restaurant);
         }
 
-        public async Task<RestaurantResponseModel> Create(RestaurantRequestModel restaurantModel)
+        public async Task<RestaurantResponseModel> Create(RestaurantRequestModel restaurantModel, IFormFile image)
         {
             var restaurant = RestaurantMap.RestaurantRequestToRestaurant(restaurantModel);
 
@@ -53,6 +54,11 @@ namespace BusinessLogicalLayer.Services
             await CnpjExist(restaurant);
 
             restaurant.HashPassword();
+
+
+            var path = ImageService.InsertImageAndReturnPath(image);
+
+            restaurant.SetImagePath(path);
 
             HandleError();
 

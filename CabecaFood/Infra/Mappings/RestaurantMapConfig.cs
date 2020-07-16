@@ -16,6 +16,8 @@ namespace Infra.Mappings
 
             builder.Property(a => a.Name).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NAME");
 
+            builder.Property(a => a.ImagePath).IsRequired().HasColumnType("VARCHAR(255)").HasColumnName("IMAGE_PATH");
+
             builder.Property(a => a.CNPJ).IsRequired().HasColumnType("CHAR(18)").HasColumnName("CNPJ");
 
             builder.Property(a => a.Password).IsRequired().HasColumnType("VARCHAR(255)").HasColumnName("PASSWORD");

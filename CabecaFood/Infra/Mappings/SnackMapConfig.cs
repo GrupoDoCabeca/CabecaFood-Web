@@ -14,6 +14,8 @@ namespace Infra.Mappings
 
             builder.Property(s => s.Deleted).IsRequired().HasDefaultValue(false).HasColumnType("BIT").HasColumnName("DELETED");
 
+            builder.Property(a => a.ImagePath).IsRequired().HasColumnType("VARCHAR(255)").HasColumnName("IMAGE_PATH");
+
             builder.Property(s => s.Name).IsRequired().HasColumnType("VARCHAR(100)").HasColumnName("NAME");
 
             builder.Property(s => s.Price).IsRequired().HasColumnType("FLOAT").HasColumnName("PRICE");

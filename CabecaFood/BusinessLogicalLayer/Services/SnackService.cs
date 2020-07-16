@@ -1,8 +1,10 @@
 ﻿using BusinessLogicalLayer.CustomsAutoMapper;
 using BusinessLogicalLayer.IServices;
 using BusinessLogicalLayer.Models.SnackModel;
+using BusinessLogicalLayer.Utils;
 using Domain.Entities;
 using Infra.IRepositories;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +24,7 @@ namespace BusinessLogicalLayer.Services
             _restaurantRepository = restaurantRepository;
         }
 
-        public async Task<SnackResponseModel> Create(int restaurantId, SnackRequestModel model)
+        public async Task<SnackResponseModel> Create(int restaurantId, SnackRequestModel model, IFormFile file)
         {
             var snack = SnackMap.SnackRequestToSnack(model);
             snack.SetRestaurantId(restaurantId);
@@ -33,6 +35,10 @@ namespace BusinessLogicalLayer.Services
 
             if (restaurant == null)
                 AddError("Restaurante", "Invalido");
+
+            var imagePath = ImageService.InsertImageAndReturnPath(file);
+
+            restaurant.SetImagePath(imagePath);
 
             HandleError();
 

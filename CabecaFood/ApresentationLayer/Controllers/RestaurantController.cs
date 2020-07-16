@@ -4,6 +4,7 @@ using BusinessLogicalLayer.Models.CommentRestaurantModel;
 using BusinessLogicalLayer.Models.OrderModel;
 using BusinessLogicalLayer.Models.RestaurantModel;
 using BusinessLogicalLayer.Models.SnackModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -109,11 +110,11 @@ namespace ApresentationLayer.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RestaurantRequestModel model)
+        public async Task<IActionResult> Create([FromBody] RestaurantRequestModel model, [FromForm] IFormFile file)
         {
             try
             {
-                var user = await _restaurantService.Create(model);
+                var user = await _restaurantService.Create(model, file);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -199,11 +200,11 @@ namespace ApresentationLayer.Controllers
 
         [HttpPost]
         [Route("{restaurantId}/snacks")]
-        public async Task<IActionResult> CreateSnack([FromRoute] int restaurantId, [FromBody] SnackRequestModel model)
+        public async Task<IActionResult> CreateSnack([FromRoute] int restaurantId, [FromBody] SnackRequestModel model, [FromForm] IFormFile file)
         {
             try
             {
-                var snack = await _snackService.Create(restaurantId, model);
+                var snack = await _snackService.Create(restaurantId, model, file);
                 return Ok(snack);
             }
             catch (Exception ex)
