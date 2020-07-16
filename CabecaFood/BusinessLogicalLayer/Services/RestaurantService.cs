@@ -55,7 +55,6 @@ namespace BusinessLogicalLayer.Services
 
             restaurant.HashPassword();
 
-
             var path = ImageService.InsertImageAndReturnPath(image);
 
             restaurant.SetImagePath(path);

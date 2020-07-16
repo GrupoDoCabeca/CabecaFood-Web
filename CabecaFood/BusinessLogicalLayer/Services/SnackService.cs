@@ -24,7 +24,7 @@ namespace BusinessLogicalLayer.Services
             _restaurantRepository = restaurantRepository;
         }
 
-        public async Task<SnackResponseModel> Create(int restaurantId, SnackRequestModel model, IFormFile file)
+        public async Task<SnackResponseModel> Create(int restaurantId, SnackRequestModel model, IFormFile image)
         {
             var snack = SnackMap.SnackRequestToSnack(model);
             snack.SetRestaurantId(restaurantId);
@@ -36,9 +36,9 @@ namespace BusinessLogicalLayer.Services
             if (restaurant == null)
                 AddError("Restaurante", "Invalido");
 
-            var imagePath = ImageService.InsertImageAndReturnPath(file);
+            var path = ImageService.InsertImageAndReturnPath(image);
 
-            restaurant.SetImagePath(imagePath);
+            snack.SetImagePath(path);
 
             HandleError();
 

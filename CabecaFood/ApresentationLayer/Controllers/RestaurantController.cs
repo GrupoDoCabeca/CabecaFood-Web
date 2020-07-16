@@ -110,7 +110,7 @@ namespace ApresentationLayer.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RestaurantRequestModel model, [FromForm] IFormFile file)
+        public async Task<IActionResult> Create([FromForm] RestaurantRequestModel model, [FromForm] IFormFile file)
         {
             try
             {
@@ -200,7 +200,7 @@ namespace ApresentationLayer.Controllers
 
         [HttpPost]
         [Route("{restaurantId}/snacks")]
-        public async Task<IActionResult> CreateSnack([FromRoute] int restaurantId, [FromBody] SnackRequestModel model, [FromForm] IFormFile file)
+        public async Task<IActionResult> CreateSnack([FromRoute] int restaurantId, [FromForm] SnackRequestModel model, [FromForm] IFormFile file)
         {
             try
             {

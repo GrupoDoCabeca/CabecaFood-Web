@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.IO;
 
 namespace BusinessLogicalLayer.Utils
@@ -7,7 +8,9 @@ namespace BusinessLogicalLayer.Utils
     {
         public static string InsertImageAndReturnPath(IFormFile image)
         {
-            string path = Path.Combine("~Pictures" + image.FileName);
+            var imageId = Guid.NewGuid().ToString().ToLower().Replace("-", "");
+
+            string path = Path.Combine(@"C:\Users\Luiz\Desktop\PastaDeFotos\" + imageId + ".png");
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 image.CopyTo(stream);
