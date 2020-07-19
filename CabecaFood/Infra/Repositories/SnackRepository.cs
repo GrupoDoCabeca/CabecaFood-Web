@@ -30,15 +30,15 @@ namespace Infra.Repositories
 
         public async Task<Snack> GetById(int id)
         {
-            return await _context.Snack.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
+            return await _context.Snack.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
         }
 
         public async Task<ICollection<Snack>> GetByRestaurantId(int restaurantId)
         {
-            return await _context.Snack.Where(x => x.RestaurantId == restaurantId && !x.Deleted).ToListAsync();
+            return await _context.Snack.AsNoTracking().Where(x => x.RestaurantId == restaurantId && !x.Deleted).ToListAsync();
         }
 
-        public async Task Save() => _context.SaveChangesAsync();
+        public async Task Save() => await _context.SaveChangesAsync();
 
         public async Task Update(Snack snack)
         {

@@ -111,7 +111,7 @@ namespace BusinessLogicalLayer.Services
 
                 var restaurant = await _restaurantRepository.GetById(id);
 
-                if (restaurant == null || restaurant.AddressId != 0)
+                if (restaurant == null || restaurant.AddressId != null)
                     AddError("Restaurante", "Invalido");
             }
             else
@@ -120,7 +120,7 @@ namespace BusinessLogicalLayer.Services
 
                 var user = await _userRepository.GetById(id);
 
-                if (user == null || user.AddressId != 0)
+                if (user == null || user.AddressId != null)
                     AddError("Usuario", "Invalido");
             }
 

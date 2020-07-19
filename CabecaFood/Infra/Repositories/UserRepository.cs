@@ -36,12 +36,12 @@ namespace Infra.Repositories
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.User.Where(x => !x.Deleted).ToListAsync();
+            return await _context.User.AsNoTracking().Where(x => !x.Deleted).ToListAsync();
         }
 
         public async Task<User> GetById(int id)
         {
-            return await _context.User.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
+            return await _context.User.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
         }
 
         public async Task<User> Login(string email, string password)

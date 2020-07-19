@@ -34,17 +34,17 @@ namespace Infra.Repositories
 
         public async Task<IEnumerable<Restaurant>> GetAll()
         {
-            return await _context.Restaurant.Where(x => !x.Deleted).ToListAsync();
+            return await _context.Restaurant.AsNoTracking().Include(x => x.Address).Where(x => !x.Deleted).ToListAsync();
         }
 
         public async Task<Restaurant> GetById(int id)
         {
-            return await _context.Restaurant.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
+            return await _context.Restaurant.AsNoTracking().Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
         }
 
         public async Task<Restaurant> Login(string email, string password)
         {
-            return await _context.Restaurant.FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
+            return await _context.Restaurant.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
         }
 
         public async Task Save()

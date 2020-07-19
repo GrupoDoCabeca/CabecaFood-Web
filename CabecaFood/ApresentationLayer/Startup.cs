@@ -73,6 +73,10 @@ namespace ApresentationLayer
                     .Migrate();
             }
 
+            app.UseCors(x => x.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader());
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
